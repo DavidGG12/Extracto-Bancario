@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\PowerTAM\\.Net_(C#)\\Template_Tesoreria\\",
+  "WorkspaceRootPath": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|c:\\powertam\\.net_(c#)\\template_tesoreria\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|c:\\users\\oraclefin11\\documents\\documentos programaci\u00F3n\\integracion\\tesoreria\\extracto bancario\\template_tesoreria\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -14,17 +14,25 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\PowerTAM\\.Net_(C#)\\Template_Tesoreria\\Program.cs",
+              "DocumentMoniker": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\PowerTAM\\.Net_(C#)\\Template_Tesoreria\\Program.cs",
+              "ToolTip": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAFIAAAAAAAAAAAAgwGEAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-04T01:40:01.007Z",
               "EditorCaption": ""

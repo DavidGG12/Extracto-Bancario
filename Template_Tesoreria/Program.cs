@@ -91,6 +91,8 @@ namespace Template_Tesoreria
                 WebClient myWebClient = new WebClient();
                 myWebClient.DownloadFile(urlArchivoDescaga, pathDestino);
 
+                //COLOCAR EL LLENADO DEL EXCEL
+
                 Console.Write("\nTemplate de Oracle Descargado con Exito\n\n");
 
 
