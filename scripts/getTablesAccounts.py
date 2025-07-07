@@ -40,9 +40,26 @@ for i in range(len(cuenta) - 1):
     dfParcial = df.iloc[(dicActual["Row"]+1):(dicSiguiente["Row"]-6)].copy()
     dfParcial.columns = columns
     dfParcial["Cuenta"] = dicActual["Account"]
-    dfParcial.to_sql("Tbl_Tesoreria_Temp", con=con.connectionDb(), if_exists="append", index=False, chunksize=100)
+    dfParcial.to_sql("Tbl_Tesoreria_Temp", con=con.connectionDbAlchemy(), if_exists="append", index=False, chunksize=100)
 
-dfResult = con.storedProcedure("pa_Tesoreria_InDatos", None)
-print(dfResult)
+
+conPyodbc = con.connectionDbPyodbc()
+sql:str = """
+SET NOCOUNT ON;
+DECLARE @result AS NVARCHAR(MAX);
+EXEC pa_Tesoreria_InDatos @result = @result OUTPUT;
+SELECT @result AS Resultado;
+"""
+
+cursor = conPyodbc.cursor()
+cursor.execute(sql)
+rows = cursor.fetchall()
+
+wrdSearch = r"INSERTADO"
+
+if re.match(wrdSearch, rows[0][0]):
+    print("DATOS INSERTADOS CORRECTAMENTE")
+else:
+    print(str(rows[0]))
 
 
