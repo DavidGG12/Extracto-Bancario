@@ -5,7 +5,6 @@ from Helper.Db import Db
 
 df = pd.read_excel("INBURSA EJEMPLO EXTRACTO BANCARIO M.N.xlsx", engine="openpyxl")
 
-pathCsv = r"C:\Users\OracleFin11\Documents\DOCUMENTOS PROGRAMACIÓN\INTEGRACION\TESORERIA\nombreArchivo.txt"
 columns = ["Fecha", "Referencia", "Referencia_Ext", "Referencia_Leyenda", "Referencia_Numerica", "Concepto", "Movimiento", "Cargo", "Abono", "Saldo", "Ordenante", "RFC_Ordenante"] 
 account = r"No. Cuenta:"
 end = r"MOVIMIENTOS:"
@@ -25,7 +24,6 @@ for row_idx, row in df.iterrows():
             cellDic["Column"] = col_word
             cellDic["Row"] = row_idx + 2
             cellDic["Account"] = value.split("No. Cuenta:")[-1].split("|")[0].strip()
-            # cellDic["Name"] = 
             
             cuenta.append(cellDic)
         if re.match(account, str(value)):
@@ -42,13 +40,9 @@ for i in range(len(cuenta) - 1):
     dfParcial = df.iloc[(dicActual["Row"]+1):(dicSiguiente["Row"]-6)].copy()
     dfParcial.columns = columns
     dfParcial["Cuenta"] = dicActual["Account"]
-    dfParcial["Fecha Insercion"] = date.strftime("%d/%m/%Y %H:%M")
-    dfParcial["Status"] = "0"
-    dfParcial.to_sql("Tbl_Tesoreria_Ext_Bancario1", con=con.connectionDb(), if_exists="append", index=False, chunksize=100)
-    # print(dfParcial.dtypes)
-    # print(dfParcial)
-    # dfParcial.to_csv(pathCsv.replace("nombreArchivo", f"{dateFormat}{i}"), sep="|")
-    # print(len(cuenta))
-    # print(i)
+    dfParcial.to_sql("Tbl_Tesoreria_Temp", con=con.connectionDb(), if_exists="append", index=False, chunksize=100)
+
+dfResult = con.storedProcedure("pa_Tesoreria_InDatos", None)
+print(dfResult)
 
 

@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Template_Tesoreria.Models
+{
+    public class Tbl_Tesoreria_Ext_Bancario
+    {
+        public string Fecha { get; set; }
+        public string Referencia { get; set; }
+        public string Referencia_Ext { get; set; }
+        public string Referencia_Leyenda { get; set; }
+        public string Referencia_Numerica { get; set; }
+        public string Concepto { get; set; }
+        public string Movimiento { get; set; }
+        public string Cargo { get; set; }
+        public string Abono { get; set; }
+        public string Saldo { get; set; }
+        public string Ordenante { get; set; }
+        public string RFC_Ordenante { get; set; }
+        public string Cuenta { get; set; }
+    }
+}

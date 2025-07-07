@@ -9,7 +9,9 @@ using Microsoft.Office.Interop.Excel;
 using System.Data;
 using System.IO;
 using System.Net;
-using Template_Tesoreria.DataAcces;
+using Template_Tesoreria.Helpers.DataAccess;
+using Template_Tesoreria.Models;
+using Template_Tesoreria.Helpers.Files;
 
 namespace Template_Tesoreria
 {
@@ -17,8 +19,11 @@ namespace Template_Tesoreria
     {
         static void Main(string[] args)
         {
+            var dtService = new DataService();
+            var cnn = new ConnectionDb();
             string opc = "", opc2 = "", nombreBanco = "", rutaCarpeta = "", urlArchivoDescaga = "", pathDestino = "";
             int numero;
+
             try
             {
                 while (true)
@@ -92,6 +97,10 @@ namespace Template_Tesoreria
                 myWebClient.DownloadFile(urlArchivoDescaga, pathDestino);
 
                 //COLOCAR EL LLENADO DEL EXCEL
+                var data = dtService.GetDataList<Tbl_Tesoreria_Ext_Bancario>(cnn.DbTesoreria1019(), "pa_Tesoreria_SelDatos", null);
+                var mngmntExcel = new ManagementExcel(pathDestino);
+                var fillData = mngmntExcel.getTemplate(data);
+
 
                 Console.Write("\nTemplate de Oracle Descargado con Exito\n\n");
 
