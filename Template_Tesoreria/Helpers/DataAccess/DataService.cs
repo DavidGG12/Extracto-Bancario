@@ -5,12 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Template_Tesoreria.Helpers.Db;
+using Template_Tesoreria.Helpers.Files;
 using static Template_Tesoreria.Helpers.Db.DbFactory;
 
 namespace Template_Tesoreria.Helpers.DataAccess
 {
     public class DataService
     {
+        private Log log = new Log();
         private T MapDataRowToModel<T>(DataRow row) where T : new()
         {
             var model = new T();
@@ -58,12 +60,18 @@ namespace Template_Tesoreria.Helpers.DataAccess
 
         public List<T> GetDataList<T>(string conString, string storedName, Dictionary<string, object> parameters) where T : new()
         {
+            log.writeLog($"SE VA A OCUPAR LA CONEXIÓN: {conString}\n\t\tSE EJECUTARÁ EL STORED PROCEDURE: {storedName}");
+
             var dbFactory = DatabaseManagerFactory.CreateDatabaseManager(conString);
             var result = dbFactory.ExecuteStoredProcedure(storedName, parameters);
 
             if (result.Rows.Count > 0)
+            {
+                log.writeLog($"DEVOLVIENDO DATOS OBTENIDOS DEL STORED PROCEDURE");
                 return MapDataList<T>(result);
+            }
 
+            log.writeLog($"NO SE OBTUVIERON DATOS DEL STORED PROCEDURE");
             return default;
         }
     }
