@@ -108,9 +108,28 @@ namespace Template_Tesoreria
                 WebClient myWebClient = new WebClient();
                 myWebClient.DownloadFile(urlArchivoDescaga, pathDestino);
 
-                //COLOCAR EL LLENADO DEL EXCEL
+                //Empezamos con la recolección de datos y el llenado de la información
                 var data = dtService.GetDataList<Tbl_Tesoreria_Ext_Bancario>(cnn.DbTesoreria1019(), "pa_Tesoreria_SelDatos", null);
                 var mngmntExcel = new ManagementExcel(pathDestino);
+                
+
+                //Limpiamos el template para trabajar con él
+                var errorList = new List<SheetError>();
+                errorList.Add(new SheetError() { Sheet = "Statement Headers", Message = mngmntExcel.cleanSheets("Statement Headers") });
+                errorList.Add(new SheetError() { Sheet = "Statement Balances", Message = mngmntExcel.cleanSheets("Statement Balances") });
+                errorList.Add(new SheetError() { Sheet = "Statement Balance Availability", Message = mngmntExcel.cleanSheets("Statement Balance Availability") });
+                errorList.Add(new SheetError() { Sheet = "Statement Lines", Message = mngmntExcel.cleanSheets("Statement Lines") });
+                errorList.Add(new SheetError() { Sheet = "Statement Line Avilability", Message = mngmntExcel.cleanSheets("Statement Line Avilability") });
+                errorList.Add(new SheetError() { Sheet = "Statement Statement Line Charges", Message = mngmntExcel.cleanSheets("Statement Statement Line Charges") });
+
+                var error = errorList.Find(x => !x.Message.Contains("ELIMINADO"));
+                if(error != null)
+                {
+                    Console.WriteLine($"Hubo un ligero error al querer limpiar los datos de la hoja {error.Sheet}.\nError: {error.Message}");
+                    return;
+                }
+
+                //Insertamos los datos que se encuentran en la base de datos
                 var fillData = mngmntExcel.getTemplate(data);
 
 

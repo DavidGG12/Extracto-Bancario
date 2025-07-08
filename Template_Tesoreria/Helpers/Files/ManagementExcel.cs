@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Template_Tesoreria.Models;
 using OfficeOpenXml;
 using System.IO;
+using System.ComponentModel.DataAnnotations;
 //using Spire.Xls;
 
 
@@ -20,15 +21,31 @@ namespace Template_Tesoreria.Helpers.Files
         public ManagementExcel(string pathExcel) 
         {
             this._path = pathExcel;
-            this._file = new FileInfo(pathExcel);
+            this._file = new FileInfo(this._path);
             ExcelPackage.License.SetNonCommercialOrganization("Grupo Sanborns");
+        }
+
+        public string cleanSheets(string sheet)
+        {
+            try
+            {
+                using(var package = new ExcelPackage(this._file))
+                {
+                    var sheetToClean = package.Workbook.Worksheets[sheet];
+                    sheetToClean.Cells["A5:A15"].Delete(eShiftTypeDelete.EntireRow);
+                    return "ELIMINADO";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public string getTemplate(List<Tbl_Tesoreria_Ext_Bancario> data)
         {
             try
             {
-
                 using(var package = new ExcelPackage(this._file))
                 {
                     var sheet = package.Workbook.Worksheets["Statement Lines"];
