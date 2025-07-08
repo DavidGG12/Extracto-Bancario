@@ -5,10 +5,14 @@ import pyodbc
 
 class Db:
     def __init__(self):
-        self.__svrDb = os.getenv("SvrDb")
-        self.__nmDb = os.getenv("NmDb")
-        self.__userDb = os.getenv("UserDb")
-        self.__pwdDb = os.getenv("PwdDb")
+        self.__svrDb = "10.128.10.19"
+        self.__nmDb = "dbTesoreria"
+        self.__userDb = "sa"
+        self.__pwdDb = "SiFiAd1019"
+        # self.__svrDb = os.getenv("SvrDb")
+        # self.__nmDb = os.getenv("NmDb")
+        # self.__userDb = os.getenv("UserDb")
+        # self.__pwdDb = os.getenv("PwdDb")
 
     def connectionDbAlchemy(self):
         strConnection = (
