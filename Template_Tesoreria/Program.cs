@@ -25,12 +25,17 @@ namespace Template_Tesoreria
             char[] secuence = { '|', '/', '-', '\\' };
             int pos = 0;
 
-            while(!token.IsCancellationRequested)
+            Console.ForegroundColor = ConsoleColor.Green;
+
+            while (!token.IsCancellationRequested)
             {
                 Console.Write($"\r{message} {secuence[pos]}");
                 pos = (pos + 1) % secuence.Length;
                 Thread.Sleep(100);
             }
+
+            Console.ResetColor();
+
             Console.Write($"\r{new string(' ', Console.WindowWidth)}");
             Console.Write("\rTerminado\n");
         }
@@ -42,8 +47,17 @@ namespace Template_Tesoreria
             var cts = new CancellationTokenSource();
             var log = new Log();
             var process = new ProcessPython(@"\\10.115.0.14\Finanzas\Tesoreria\EXE\getTablesAccounts.exe");
+            var options = new List<MenuOptionModel>()
+            {
+                new MenuOptionModel() { ID = "1", Option = "1. - INBURSA", Value = "Inbursa" },
+                new MenuOptionModel() { ID = "2", Option = "2. - HSBC", Value = "HSBC" },
+                new MenuOptionModel() { ID = "3", Option = "3. - BANCOMER", Value = "Bancomer" },
+                new MenuOptionModel() { ID = "4", Option = "4. - SCOTIABANK", Value = "Scotiabank" },
+                new MenuOptionModel() { ID = "5", Option = "5. - CITIBANAMEX", Value = "Citibanamex" },
+                new MenuOptionModel() { ID = "6", Option = "6. - SANTANDER", Value = "Santander" },
+                new MenuOptionModel() { ID = "7", Option = "7. - BANORTE", Value = "Banorte" }
+            };
             string opc = "", opc2 = "", nombreBanco = "", rutaCarpeta = "", urlArchivoDescaga = "", pathDestino = "";
-            int numero;
 
             try
             {
@@ -53,46 +67,50 @@ namespace Template_Tesoreria
                 {
                     log.writeLog("IMPRESIÓN DEL MENÚ");
 
-                    Console.Write("\nSelecciona la Compañia de Activo que deseas generar \n 1 - Inbursa \n 2 - HSBC \n 3 - Bancomer \n 4 - Scotiabank \n 5 - Citi \n 6 - Santander \n 7 - Banorte\n");
-                    Console.Write("Opcion: ");
+                    Console.Title = "Template Tesoreria";
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+
+                    Console.WriteLine("╔════════════════════════════════════════════════════╗");
+                    Console.WriteLine("║                 TEMPLATE  TESORERIA                ║");
+                    Console.WriteLine("║                                                    ║");
+                    Console.WriteLine("║  Por favor selecciona el banco de la siguiente     ║");
+                    Console.WriteLine("║  lista para continuar:                             ║");
+                    Console.WriteLine("╚════════════════════════════════════════════════════╝\n");
+
+                    Console.ResetColor();
+
+                    Console.WriteLine("Selecciona la compañía que deseas generar:\n");
+
+                    foreach(var option in options)
+                    {
+                        Console.WriteLine(option.Option);
+                    }
+                    Console.Write("\nOpción: ");
                     opc = Console.ReadLine().Trim();
 
                     log.writeLog($"SE ESCOGIÓ LA OPCIÓN: {opc}");
 
-                    if (int.TryParse(opc, out numero))
+                    var chsOpt = options.Find(x => x.ID.Contains(opc));
+
+                    if(chsOpt != null)
                     {
-                        numero = Convert.ToInt32(opc);
-                        if (numero == 1 || numero == 2 || numero == 3 || numero == 4 || numero == 5 || numero == 6 || numero == 7)
+                        nombreBanco = chsOpt.Value;
+                        Console.Write($"\n¿Está seguro de querer trabajar con {nombreBanco}? [S/N]: ");
+                        opc2 = Console.ReadLine().Trim();
+                        if (opc2.Equals("s", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (numero == 1) nombreBanco = "Inbursa";
-                            if (numero == 2) nombreBanco = "HSBC";
-                            if (numero == 3) nombreBanco = "Bancomer";
-                            if (numero == 4) nombreBanco = "Scotiabank";
-                            if (numero == 5) nombreBanco = "Citibanamex";
-                            if (numero == 6) nombreBanco = "Santander";
-                            if (numero == 7) nombreBanco = "Banorte";
-
-                            log.writeLog($"LA OPCIÓN {opc} CORRESPONDE AL BANCO: {nombreBanco}");
-
-                            Console.Write($"\n¿Está seguro de querer trabajar con {nombreBanco}? [S/N]: ");
-                            opc2 = Console.ReadLine().Trim();
-
-
-                            if (opc2.Equals("s", StringComparison.OrdinalIgnoreCase))
-                            {
-                                log.writeLog($"SE CONFIRMA EL USO DEL BANCO {nombreBanco}");
-                                break;
-                            }
+                            log.writeLog($"SE CONFIRMA EL USO DEL BANCO {nombreBanco}");
+                            Console.Clear();
+                            break;
                         }
-                        else
-                        {
-                            Console.Write("No existe la Opción " + opc + " en la lista\n\n");
-                            log.writeLog($"SE INGRESÓ LA OPCIÓN: {opc} Y NO SE ENCUENTRA DENTRO DE LA LISTA");
-                        }
+                        Console.Clear();
                     }
                     else
                     {
-                        Console.Write("El valor que ingreso no es Númerico!!!\n\n");
+                        Console.WriteLine("\nNo existe la opción escogida\nIntente de nuevo");
+                        Thread.Sleep(1000);
+                        log.writeLog($"LA OPCIÓN {opc} NO EXISTE, REGRESANDO AL MENÚ");
+                        Console.Clear();
                     }
                 }
 
@@ -117,7 +135,7 @@ namespace Template_Tesoreria
                     return;
                 }
 
-                Console.WriteLine("\nDatos descargados.\n\n");
+                Console.Write("\nDatos descargados.\n\n");
                 
                 log.writeLog($"LOS DATOS SE HAN DESCARGADO CORRECTAMENTE");
                 log.writeLog($"COMIENZA LA DESCARGA DEL TEMPLATE");
@@ -132,13 +150,8 @@ namespace Template_Tesoreria
                 var linkNodes = htmlDocument.DocumentNode.SelectNodes("//a[@href]");
 
                 if (linkNodes != null)
-                {
                     foreach (var linkNode in linkNodes)
-                    {
                         urlArchivoDescaga = linkNode.GetAttributeValue("href", string.Empty);
-                        //Console.WriteLine($"Enlace: {hrefValue}");
-                    }
-                }
 
                 log.writeLog($"SE OBTUVO LA INFORMACIÓN PARA PODER DESCARGAR CORRECTAMENTE EL TEMPLATE");
 
@@ -156,16 +169,7 @@ namespace Template_Tesoreria
                 log.writeLog($"EL TEMPLATE SE INSERTARÁ EN LA SIGUIENTE RUTA: {pathDestino}");
                 
                 WebClient myWebClient = new WebClient();
-
-                Task.Run(() =>
-                {
-                    mngmntExcel.closeDocument();
-                    myWebClient.DownloadFile(urlArchivoDescaga, pathDestino);
-                    cts.Cancel();
-                }
-                );
-
-                Spinner("Procesando...", cts.Token);
+                myWebClient.DownloadFile(urlArchivoDescaga, pathDestino);
 
                 log.writeLog($"SE DESCARGA EL TEMPLATE");
                 log.writeLog($"EMPIEZA LA INSERCIÓN DE LOS DATOS EN EL TEMPLATE");
@@ -188,6 +192,7 @@ namespace Template_Tesoreria
                 if(error != null)
                 {
                     Console.WriteLine($"Hubo un ligero error al querer limpiar los datos de la hoja {error.Sheet}.\nError: {error.Message}");
+                    log.writeLog($"**********************************************************************");
                     return;
                 }
 
@@ -196,11 +201,15 @@ namespace Template_Tesoreria
                 //Insertamos los datos que se encuentran en la base de datos
                 var fillData = mngmntExcel.getTemplate(data);
 
-                Console.Write("\nTemplate de Oracle Descargado con Exito\n\n");
+                Console.Write("Template de Oracle Descargado con Exito\n\n");
+                
+                Console.Write("\nPresiona cualquier tecla para salir...");
+                Console.ReadKey();
 
                 Process.Start(pathDestino);
                 log.writeLog($"ABRIENDO ARCHIVO\n\t\t**PROCESO TERMINADO**");
                 log.writeLog($"**********************************************************************");
+
 
                 //Proceso para Leer Formato de Banco
                 //UploadFile("");

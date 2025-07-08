@@ -167,6 +167,7 @@
     <Compile Include="Helpers\Files\Log.cs" />
     <Compile Include="Helpers\Files\ManagementExcel.cs" />
     <Compile Include="Helpers\ProcessExe\ProcessPython.cs" />
+    <Compile Include="Models\MenuOptionModel.cs" />
     <Compile Include="Models\SheetError.cs" />
     <Compile Include="Models\Tbl_Tesoreria_Ext_Bancario.cs" />
     <Compile Include="Program.cs" />
