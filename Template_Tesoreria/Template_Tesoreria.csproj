@@ -137,6 +137,7 @@
     <Compile Include="Helpers\Db\DbFactory.cs" />
     <Compile Include="Helpers\Db\Interface\IDatabaseManager.cs" />
     <Compile Include="Helpers\Files\ManagementExcel.cs" />
+    <Compile Include="Helpers\ProcessExe\ProcessPython.cs" />
     <Compile Include="Models\Tbl_Tesoreria_Ext_Bancario.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

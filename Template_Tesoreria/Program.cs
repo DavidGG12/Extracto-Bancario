@@ -12,6 +12,7 @@ using System.Net;
 using Template_Tesoreria.Helpers.DataAccess;
 using Template_Tesoreria.Models;
 using Template_Tesoreria.Helpers.Files;
+using Template_Tesoreria.Helpers.ProcessExe;
 
 namespace Template_Tesoreria
 {
@@ -21,6 +22,7 @@ namespace Template_Tesoreria
         {
             var dtService = new DataService();
             var cnn = new ConnectionDb();
+            var process = new ProcessPython(@"\\10.115.0.14\Finanzas\IanGarcia\EXE\getTablesAccounts.exe");
             string opc = "", opc2 = "", nombreBanco = "", rutaCarpeta = "", urlArchivoDescaga = "", pathDestino = "";
             int numero;
 
@@ -64,7 +66,17 @@ namespace Template_Tesoreria
                     }
                 }
 
-                Console.Write("\nDescargando Template de Oracle\n\n");                    
+                Console.Write("\nDescargando Template de Oracle\n\n");
+
+                var result = process.ExecuteProcess();
+
+                if (!string.Equals(result.TrimEnd().TrimStart(), "DATOS INSERTADOS CORRECTAMENTE"))
+                {
+                    Console.WriteLine(result);
+                    return;
+                }
+
+                Console.WriteLine("\nDatos descargados.\n\n");
 
                 WebClient client1 = new WebClient();
                 string htmlCode = client1.DownloadString("https://docs.oracle.com/en/cloud/saas/financials/25b/oefbf/cashmanagementbankstatementdataimport-3168.html#cashmanagementbankstatementdataimport-3168");

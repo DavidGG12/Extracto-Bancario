@@ -3,7 +3,7 @@ import re
 from datetime import datetime, time
 from Helper.Db import Db
 
-df = pd.read_excel("INBURSA EJEMPLO EXTRACTO BANCARIO M.N.xlsx", engine="openpyxl")
+df = pd.read_excel(r"C:\Users\OracleFin11\Documents\DOCUMENTOS PROGRAMACIÓN\INTEGRACION\TESORERIA\INBURSA EJEMPLO EXTRACTO BANCARIO M.N.xlsx", engine="openpyxl")
 
 columns = ["Fecha", "Referencia", "Referencia_Ext", "Referencia_Leyenda", "Referencia_Numerica", "Concepto", "Movimiento", "Cargo", "Abono", "Saldo", "Ordenante", "RFC_Ordenante"] 
 account = r"No. Cuenta:"
