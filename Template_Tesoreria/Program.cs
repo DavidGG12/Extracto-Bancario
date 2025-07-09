@@ -47,7 +47,6 @@ namespace Template_Tesoreria
             var cnn = new ConnectionDb();
             var cts = new CancellationTokenSource();
             var log = new Log();
-            var process = new ProcessPython(@"\\10.115.0.14\Finanzas\Tesoreria\EXE\getTablesAccounts.exe");
             var options = new List<MenuOptionModel>()
             {
                 new MenuOptionModel() { ID = "1", Option = "1. - INBURSA", Value = "Inbursa" },
@@ -64,6 +63,8 @@ namespace Template_Tesoreria
             {
                 log.writeLog("COMENZANDO PROCESO");
 
+
+                #region MENU
                 while (true)
                 {
                     log.writeLog("IMPRESIÓN DEL MENÚ");
@@ -115,30 +116,12 @@ namespace Template_Tesoreria
                     }
                 }
 
-                Console.Write("\nDescargando Template de Oracle\n\n");
-                //var result = "";
+                #endregion
 
-                //Task.Run(() =>
-                //    {
-                //        result = process.ExecuteProcess();
-                //        cts.Cancel();
-                //    }
-                //);
+                #region Proceso
+                Console.Write("\nComenzando proceso.\n\n");
 
-                //Spinner("Procesando...", cts.Token);
-
-                //if (!string.Equals(result.TrimEnd().TrimStart(), "DATOS INSERTADOS CORRECTAMENTE"))
-                //{
-                //    Console.WriteLine(result);
-                //    log.writeLog($"HUBO UN LIGERO ERROR AL QUERER INSERTAR LOS DATOS\n\tERROR: {result}");
-                //    return;
-                //}
-
-                Console.Write("\nDatos descargados.\n\n");
-                
-                log.writeLog($"LOS DATOS SE HAN DESCARGADO CORRECTAMENTE");
-                log.writeLog($"COMIENZA LA DESCARGA DEL TEMPLATE");
-
+                #region Descarga Template
                 WebClient client1 = new WebClient();
                 string htmlCode = client1.DownloadString("https://docs.oracle.com/en/cloud/saas/financials/25b/oefbf/cashmanagementbankstatementdataimport-3168.html#cashmanagementbankstatementdataimport-3168");
                 string[] lines = htmlCode.Split('\n');
@@ -165,15 +148,23 @@ namespace Template_Tesoreria
                 pathDestino = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\\Downloads\\Templates\\CashManagementBankStatementImportTemplate_" + nombreBanco + ".xlsm";
                 var mngmntExcel = new ManagementExcel(pathDestino);
 
+                mngmntExcel.closeDocument();
+
                 log.writeLog($"EL TEMPLATE SE INSERTARÁ EN LA SIGUIENTE RUTA: {pathDestino}");
                 
                 WebClient myWebClient = new WebClient();
                 myWebClient.DownloadFile(urlArchivoDescaga, pathDestino);
 
+                Console.Write("\nTemplate Descargado.\n\n");
+                Console.Write("\nSe insertan los datos.\n\n");
+
                 log.writeLog($"SE DESCARGA EL TEMPLATE");
                 log.writeLog($"EMPIEZA LA INSERCIÓN DE LOS DATOS EN EL TEMPLATE");
+                #endregion
 
+                #region Obtención de IP
                 //Obtenemos la ip del usuario
+                Console.Write("\nSe obtiene la IP del usuario.\n\n");
                 var ip = "";
 
                 foreach(var ipv4 in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
@@ -185,7 +176,10 @@ namespace Template_Tesoreria
                     }
                 }
 
+                Console.Write($"\nSe trabajará con la IP: {ip}\n\n");
+                #endregion
 
+                #region Inserción de Datos en Template
                 //Empezamos con la recolección de datos y el llenado de la información
                 var data = new List<Tbl_Tesoreria_Ext_Bancario>();
                 var parameters = new Dictionary<string, object>()
@@ -193,6 +187,8 @@ namespace Template_Tesoreria
                     { "@Ip", "10.115.3.177" },
                     { "@Excelname", "a.xls" }
                 };
+
+                Console.Write($"\nObteniendo los datos que se insertaran en el template.\n\n");
 
                 Task.Run(() =>
                     {
@@ -229,8 +225,9 @@ namespace Template_Tesoreria
                 //Insertamos los datos que se encuentran en la base de datos
                 var fillData = mngmntExcel.getTemplate(data);
 
-                Console.Write("Template de Oracle Descargado con Exito\n\n");
-                
+                Console.Write("Template de Oracle llenado con éxito.\n\n");
+                #endregion
+
                 Console.Write("\nPresiona cualquier tecla para salir...");
                 Console.ReadKey();
 
@@ -241,7 +238,7 @@ namespace Template_Tesoreria
 
                 //Proceso para Leer Formato de Banco
                 //UploadFile("");
-
+                #endregion
             }
             catch (Exception ex)
             {

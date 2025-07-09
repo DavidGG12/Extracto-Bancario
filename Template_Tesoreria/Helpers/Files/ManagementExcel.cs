@@ -75,6 +75,7 @@ namespace Template_Tesoreria.Helpers.Files
                         sheet.Cells[$"BP{i}"].Value = rows.Referencia_Numerica ?? "";
                         i++;
                     }
+                    //sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
                     package.Save();
                     this._log.writeLog($"SE INSERTARON LOS REGISTROS CORRECTAMENTE");
                     return "CORRECTO";
