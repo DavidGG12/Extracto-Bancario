@@ -3,24 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|c:\\users\\oraclefin11\\documents\\documentos programaci\u00F3n\\integracion\\tesoreria\\extracto bancario\\template_tesoreria\\helpers\\dataaccess\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|solutionrelative:helpers\\dataaccess\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|c:\\users\\oraclefin11\\documents\\documentos programaci\u00F3n\\integracion\\tesoreria\\extracto bancario\\template_tesoreria\\helpers\\db\\dbfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|solutionrelative:helpers\\db\\dbfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|c:\\users\\oraclefin11\\documents\\documentos programaci\u00F3n\\integracion\\tesoreria\\extracto bancario\\template_tesoreria\\helpers\\dataaccess\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|solutionrelative:helpers\\dataaccess\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|c:\\users\\oraclefin11\\documents\\documentos programaci\u00F3n\\integracion\\tesoreria\\extracto bancario\\template_tesoreria\\helpers\\files\\managementexcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|solutionrelative:helpers\\files\\managementexcel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|c:\\users\\oraclefin11\\documents\\documentos programaci\u00F3n\\integracion\\tesoreria\\extracto bancario\\template_tesoreria\\models\\menuoptionmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|solutionrelative:models\\menuoptionmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|c:\\users\\oraclefin11\\documents\\documentos programaci\u00F3n\\integracion\\tesoreria\\extracto bancario\\template_tesoreria\\helpers\\db\\dbfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|solutionrelative:helpers\\db\\dbfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|c:\\users\\oraclefin11\\documents\\documentos programaci\u00F3n\\integracion\\tesoreria\\extracto bancario\\template_tesoreria\\models\\tbl_tesoreria_ext_bancario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|solutionrelative:models\\tbl_tesoreria_ext_bancario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A409C434-B4A8-4812-9AA6-AA5ADF6A7400}|Template_Tesoreria.csproj|c:\\users\\oraclefin11\\documents\\documentos programaci\u00F3n\\integracion\\tesoreria\\extracto bancario\\template_tesoreria\\helpers\\processexe\\processpython.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -38,17 +38,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAJ4AAAAAAAAAAAAAAGAAAAAzAAAAAAAAAA==",
+              "ViewState": "AgIAAKsAAAAAAAAAAAAgwLUAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-04T01:40:01.007Z",
               "IsPinned": true,
@@ -60,39 +60,39 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "MenuOptionModel.cs",
-              "DocumentMoniker": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\Models\\MenuOptionModel.cs",
-              "RelativeDocumentMoniker": "Models\\MenuOptionModel.cs",
-              "ToolTip": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\Models\\MenuOptionModel.cs",
-              "RelativeToolTip": "Models\\MenuOptionModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAbAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "Tbl_Tesoreria_Ext_Bancario.cs",
+              "DocumentMoniker": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\Models\\Tbl_Tesoreria_Ext_Bancario.cs",
+              "RelativeDocumentMoniker": "Models\\Tbl_Tesoreria_Ext_Bancario.cs",
+              "ToolTip": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\Models\\Tbl_Tesoreria_Ext_Bancario.cs",
+              "RelativeToolTip": "Models\\Tbl_Tesoreria_Ext_Bancario.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAzwA0AAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-08T21:58:20.442Z",
+              "WhenOpened": "2025-07-09T16:46:20.745Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "DbFactory.cs",
               "DocumentMoniker": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\Helpers\\Db\\DbFactory.cs",
               "RelativeDocumentMoniker": "Helpers\\Db\\DbFactory.cs",
               "ToolTip": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\Helpers\\Db\\DbFactory.cs",
               "RelativeToolTip": "Helpers\\Db\\DbFactory.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAAAqwEIAAAA+AAAAAAAAAA==",
+              "ViewState": "AgIAADYAAAAAAAAAAAApwEUAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-08T18:11:36.939Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "DataService.cs",
               "DocumentMoniker": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\Helpers\\DataAccess\\DataService.cs",
               "RelativeDocumentMoniker": "Helpers\\DataAccess\\DataService.cs",
               "ToolTip": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\Helpers\\DataAccess\\DataService.cs",
               "RelativeToolTip": "Helpers\\DataAccess\\DataService.cs",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAYwEUAAABSAAAAAAAAAA==",
+              "ViewState": "AgIAADAAAAAAAAAAAAAhwEsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-08T18:09:23.229Z",
               "EditorCaption": ""
@@ -118,20 +118,20 @@
               "RelativeDocumentMoniker": "Helpers\\ProcessExe\\ProcessPython.cs",
               "ToolTip": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\Helpers\\ProcessExe\\ProcessPython.cs",
               "RelativeToolTip": "Helpers\\ProcessExe\\ProcessPython.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-08T17:04:03.072Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "ManagementExcel.cs",
               "DocumentMoniker": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\Helpers\\Files\\ManagementExcel.cs",
               "RelativeDocumentMoniker": "Helpers\\Files\\ManagementExcel.cs",
               "ToolTip": "C:\\Users\\OracleFin11\\Documents\\DOCUMENTOS PROGRAMACI\u00D3N\\INTEGRACION\\TESORERIA\\Extracto Bancario\\Template_Tesoreria\\Helpers\\Files\\ManagementExcel.cs",
               "RelativeToolTip": "Helpers\\Files\\ManagementExcel.cs",
-              "ViewState": "AgIAAFMAAAAAAAAAAAAvwCYAAAAUAAAAAAAAAA==",
+              "ViewState": "AgIAACMAAAAAAAAAAAAlwD0AAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-08T15:10:46.972Z",
               "EditorCaption": ""

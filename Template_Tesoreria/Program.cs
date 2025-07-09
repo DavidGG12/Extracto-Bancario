@@ -15,6 +15,7 @@ using Template_Tesoreria.Helpers.Files;
 using Template_Tesoreria.Helpers.ProcessExe;
 using System.Diagnostics;
 using System.Threading;
+using System.Net.Sockets;
 
 namespace Template_Tesoreria
 {
@@ -115,25 +116,23 @@ namespace Template_Tesoreria
                 }
 
                 Console.Write("\nDescargando Template de Oracle\n\n");
-                log.writeLog($"SE EMPIENZA EL LLENADO DEL TEMPLATE DE ORACLE");
+                //var result = "";
 
-                var result = "";
+                //Task.Run(() =>
+                //    {
+                //        result = process.ExecuteProcess();
+                //        cts.Cancel();
+                //    }
+                //);
 
-                Task.Run(() =>
-                    {
-                        result = process.ExecuteProcess();
-                        cts.Cancel();
-                    }
-                );
+                //Spinner("Procesando...", cts.Token);
 
-                Spinner("Procesando...", cts.Token);
-
-                if (!string.Equals(result.TrimEnd().TrimStart(), "DATOS INSERTADOS CORRECTAMENTE"))
-                {
-                    Console.WriteLine(result);
-                    log.writeLog($"HUBO UN LIGERO ERROR AL QUERER INSERTAR LOS DATOS\n\tERROR: {result}");
-                    return;
-                }
+                //if (!string.Equals(result.TrimEnd().TrimStart(), "DATOS INSERTADOS CORRECTAMENTE"))
+                //{
+                //    Console.WriteLine(result);
+                //    log.writeLog($"HUBO UN LIGERO ERROR AL QUERER INSERTAR LOS DATOS\n\tERROR: {result}");
+                //    return;
+                //}
 
                 Console.Write("\nDatos descargados.\n\n");
                 
@@ -174,19 +173,48 @@ namespace Template_Tesoreria
                 log.writeLog($"SE DESCARGA EL TEMPLATE");
                 log.writeLog($"EMPIEZA LA INSERCIÓN DE LOS DATOS EN EL TEMPLATE");
 
+                //Obtenemos la ip del usuario
+                var ip = "";
+
+                foreach(var ipv4 in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
+                {
+                    if(ipv4.AddressFamily == AddressFamily.InterNetwork)
+                    {
+                        ip = ipv4.ToString();
+                        break;
+                    }
+                }
+
+
                 //Empezamos con la recolección de datos y el llenado de la información
-                var data = dtService.GetDataList<Tbl_Tesoreria_Ext_Bancario>(cnn.DbTesoreria1019(), "pa_Tesoreria_SelDatos", null);
+                var data = new List<Tbl_Tesoreria_Ext_Bancario>();
+                var parameters = new Dictionary<string, object>()
+                {
+                    { "@Ip", "10.115.3.177" },
+                    { "@Excelname", "a.xls" }
+                };
+
+                Task.Run(() =>
+                    {
+                        data = dtService.GetDataList<Tbl_Tesoreria_Ext_Bancario>(cnn.DbTesoreria1019(), "pa_Tesoreria_CargaExcel", null);
+                        cts.Cancel();
+                    }
+                );
+
+                Spinner("Procesando...", cts.Token);
 
 
                 //Limpiamos el template para trabajar con él
                 log.writeLog($"LIMPIAMOS EL TEMPLATE PARA PODER INSERTAR LOS DATOS");
-                var errorList = new List<SheetError>();
-                errorList.Add(new SheetError() { Sheet = "Statement Headers", Message = mngmntExcel.cleanSheets("Statement Headers") });
-                errorList.Add(new SheetError() { Sheet = "Statement Balances", Message = mngmntExcel.cleanSheets("Statement Balances") });
-                errorList.Add(new SheetError() { Sheet = "Statement Balance Availability", Message = mngmntExcel.cleanSheets("Statement Balance Availability") });
-                errorList.Add(new SheetError() { Sheet = "Statement Lines", Message = mngmntExcel.cleanSheets("Statement Lines") });
-                errorList.Add(new SheetError() { Sheet = "Statement Line Avilability", Message = mngmntExcel.cleanSheets("Statement Line Availability") });
-                errorList.Add(new SheetError() { Sheet = "Statement Statement Line Charges", Message = mngmntExcel.cleanSheets("Statement Line Charges") });
+                var errorList = new List<SheetError>()
+                {
+                    new SheetError() { Sheet = "Statement Headers", Message = mngmntExcel.cleanSheets("Statement Headers") },
+                    new SheetError() { Sheet = "Statement Balances", Message = mngmntExcel.cleanSheets("Statement Balances") },
+                    new SheetError() { Sheet = "Statement Balance Availability", Message = mngmntExcel.cleanSheets("Statement Balance Availability") },
+                    new SheetError() { Sheet = "Statement Lines", Message = mngmntExcel.cleanSheets("Statement Lines") },
+                    new SheetError() { Sheet = "Statement Line Avilability", Message = mngmntExcel.cleanSheets("Statement Line Availability") },
+                    new SheetError() { Sheet = "Statement Statement Line Charges", Message = mngmntExcel.cleanSheets("Statement Line Charges") }
+                };
 
                 var error = errorList.Find(x => !x.Message.Contains("ELIMINADO"));
                 if(error != null)
