@@ -13,16 +13,18 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Users\OracleFin11\Documents\PUBLICACIONES\Templeate_Tesoreria\</PublishUrl>
+    <PublishUrl>\\10.115.0.14\Finanzas\Tesoreria\Tesoreria-Template\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
+    <InstallFrom>Unc</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>\\10.115.0.14\Finanzas\Tesoreria\Tesoreria-Template\</InstallUrl>
+    <WebPage>publish.htm</WebPage>
     <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
@@ -167,6 +169,7 @@
     <Compile Include="Helpers\Files\Log.cs" />
     <Compile Include="Helpers\Files\ManagementExcel.cs" />
     <Compile Include="Helpers\ProcessExe\ProcessPython.cs" />
+    <Compile Include="Models\BancoPrefijoModel.cs" />
     <Compile Include="Models\MenuOptionModel.cs" />
     <Compile Include="Models\SheetError.cs" />
     <Compile Include="Models\Tbl_Tesoreria_Ext_Bancario.cs" />

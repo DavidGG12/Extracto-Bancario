@@ -20,13 +20,23 @@ namespace Template_Tesoreria.Helpers.Files
         private string _path;
         private FileInfo _file;
         private Log _log;
-
+        private List<BancoPrefijoModel> _preBank;
         public ManagementExcel(string pathExcel) 
         {
             this._path = pathExcel;
             this._file = new FileInfo(this._path);
-            ExcelPackage.License.SetNonCommercialOrganization("Grupo Sanborns");
             this._log = new Log();
+            this._preBank = new List<BancoPrefijoModel>()
+            {
+                new BancoPrefijoModel(){ NombreBanco = "Inbursa", Prefijo = "INB" },
+                new BancoPrefijoModel(){ NombreBanco = "HSBC", Prefijo = "HSBC" },
+                new BancoPrefijoModel(){ NombreBanco = "Bancomer", Prefijo = "BBVA" },
+                new BancoPrefijoModel(){ NombreBanco = "Scotiabank", Prefijo = "SCOT" },
+                new BancoPrefijoModel(){ NombreBanco = "Citibanamex", Prefijo = "CITI" },
+                new BancoPrefijoModel(){ NombreBanco = "Santander", Prefijo = "SANT" },
+                new BancoPrefijoModel(){ NombreBanco = "Banorte", Prefijo = "BAN" }
+            };
+            ExcelPackage.License.SetNonCommercialOrganization("Grupo Sanborns");
         }
 
         public string cleanSheets(string sheet)
@@ -50,32 +60,56 @@ namespace Template_Tesoreria.Helpers.Files
             }
         }
 
-        public string getTemplate(List<Tbl_Tesoreria_Ext_Bancario> data)
+        public string getTemplate(List<Tbl_Tesoreria_Ext_Bancario> data, string bank)
         {
             try
             {
                 using(var package = new ExcelPackage(this._file))
                 {
                     var sheet = package.Workbook.Worksheets["Statement Lines"];
-                    int i = 5;
+                    var i = 5;
+                    var j = 1;
                     
                     this._log.writeLog($"COMIENZO CON CICLO PARA LA INSERCIÓN DE DATOS.\n\t\tSE INSERTARAN {data.Count} REGISTROS");
 
                     foreach (var rows in data)
                     {
-                        sheet.Cells[$"B{i}"].Value = rows.Cuenta.Replace("-PESOS", "") ?? "";
-                        sheet.Cells[$"D{i}"].Value = rows.Concepto ?? "";
-                        sheet.Cells[$"H{i}"].Value = rows.Fecha ?? "";
-                        sheet.Cells[$"L{i}"].Value = rows.Referencia ?? "";
-                        sheet.Cells[$"S{i}"].Value = rows.RFC_Ordenante ?? "";
-                        sheet.Cells[$"T{i}"].Value = rows.Ordenante ?? "";
-                        sheet.Cells[$"W{i}"].Value = rows.Movimiento ?? "";
-                        sheet.Cells[$"X{i}"].Value = rows.Referencia_Leyenda ?? "";
+                        var accounts = rows.Cuenta.Replace("-PESOS", "") ?? "";
+                        accounts = accounts.Substring(accounts.Length - 6);
+
+                        var stmntNumber = string.Concat(
+                            this._preBank.Find(x => x.NombreBanco.Contains(bank)).Prefijo, "-",
+                            int.Parse(accounts), "-",
+                            rows.Fecha.Replace("/", "")
+                        );
+
+                        if (i > 5)
+                        {
+                            if (sheet.Cells[$"B{i - 1}"].Text == rows.Cuenta.Replace("-PESOS", "")) j++;
+                            else j = 1;
+                        }
+
+                        sheet.Cells[$"A{i}"].Value  = stmntNumber;
+                        sheet.Cells[$"B{i}"].Value  = rows.Cuenta.Replace("-PESOS", "") ?? "";
+                        sheet.Cells[$"C{i}"].Value  = j;
+                        sheet.Cells[$"D{i}"].Value  = rows.Concepto ?? "";
+                        sheet.Cells[$"F{i}"].Value  = rows.Cargo != "0.0" ? rows.Cargo : rows.Abono;
+                        sheet.Cells[$"G{i}"].Value  = rows.Moneda;
+                        sheet.Cells[$"H{i}"].Value  = rows.Fecha ?? "";
+                        sheet.Cells[$"J{i}"].Value  = rows.Cargo != "0.0" ? "DBIT" : "CRDT";
+                        sheet.Cells[$"L{i}"].Value  = rows.Referencia ?? "";
+                        sheet.Cells[$"S{i}"].Value  = rows.RFC_Ordenante ?? "";
+                        sheet.Cells[$"T{i}"].Value  = rows.Ordenante ?? "";
+                        sheet.Cells[$"W{i}"].Value  = rows.Movimiento ?? "";
+                        sheet.Cells[$"X{i}"].Value  = rows.Referencia_Leyenda ?? "";
                         sheet.Cells[$"BN{i}"].Value = rows.Referencia_Ext ?? "";
                         sheet.Cells[$"BP{i}"].Value = rows.Referencia_Numerica ?? "";
+                       
                         i++;
                     }
-                    //sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
+                    sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
+                    sheet.Row(1).CustomHeight = false;
+                    //sheet.Cells[sheet.Dimension.Address].AutoFitColumns;
                     package.Save();
                     this._log.writeLog($"SE INSERTARON LOS REGISTROS CORRECTAMENTE");
                     return "CORRECTO";

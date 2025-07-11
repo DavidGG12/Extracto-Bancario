@@ -8,6 +8,7 @@ namespace Template_Tesoreria.Models
 {
     public class Tbl_Tesoreria_Ext_Bancario
     {
+        public string Cuenta { get; set; }
         public string Fecha { get; set; }
         public string Referencia { get; set; }
         public string Referencia_Ext { get; set; }
@@ -20,6 +21,7 @@ namespace Template_Tesoreria.Models
         public string Saldo { get; set; }
         public string Ordenante { get; set; }
         public string RFC_Ordenante { get; set; }
-        public string Cuenta { get; set; }
+        public string Saldo_Inicial { get; set; }
+        public string Moneda { get; set; }
     }
 }

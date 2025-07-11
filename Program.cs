@@ -223,7 +223,7 @@ namespace Template_Tesoreria
                 log.writeLog($"TERMINO DE LIMPIEZA, SE PROSIGUE CON LA INSERCIÓN DE DATOS");
 
                 //Insertamos los datos que se encuentran en la base de datos
-                var fillData = mngmntExcel.getTemplate(data);
+                var fillData = mngmntExcel.getTemplate(data, nombreBanco);
 
                 Console.Write("Template de Oracle llenado con éxito.\n\n");
                 #endregion
