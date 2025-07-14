@@ -22,6 +22,7 @@ namespace Template_Tesoreria.Models
         public string Ordenante { get; set; }
         public string RFC_Ordenante { get; set; }
         public string Saldo_Inicial { get; set; }
+        public string Saldo_Final { get; set; }
         public string Moneda { get; set; }
     }
 }

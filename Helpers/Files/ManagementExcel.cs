@@ -10,6 +10,7 @@ using System.IO;
 using System.ComponentModel.DataAnnotations;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
+using System.Runtime.ExceptionServices;
 //using Spire.Xls;
 
 
@@ -18,23 +19,29 @@ namespace Template_Tesoreria.Helpers.Files
     public class ManagementExcel
     {
         private string _path;
+        private string bank;
+        private int _rowHeader;
+        private int _rowBalances;
         private FileInfo _file;
         private Log _log;
         private List<BancoPrefijoModel> _preBank;
-        public ManagementExcel(string pathExcel) 
+        public ManagementExcel(string pathExcel, string bank) 
         {
+            this._rowHeader = 5;
+            this._rowBalances = 5;
+            this.bank = bank;
             this._path = pathExcel;
             this._file = new FileInfo(this._path);
             this._log = new Log();
             this._preBank = new List<BancoPrefijoModel>()
             {
-                new BancoPrefijoModel(){ NombreBanco = "Inbursa", Prefijo = "INB" },
-                new BancoPrefijoModel(){ NombreBanco = "HSBC", Prefijo = "HSBC" },
-                new BancoPrefijoModel(){ NombreBanco = "Bancomer", Prefijo = "BBVA" },
-                new BancoPrefijoModel(){ NombreBanco = "Scotiabank", Prefijo = "SCOT" },
-                new BancoPrefijoModel(){ NombreBanco = "Citibanamex", Prefijo = "CITI" },
-                new BancoPrefijoModel(){ NombreBanco = "Santander", Prefijo = "SANT" },
-                new BancoPrefijoModel(){ NombreBanco = "Banorte", Prefijo = "BAN" }
+                new BancoPrefijoModel(){ NombreBanco = "Inbursa",       Prefijo = "INB"  },
+                new BancoPrefijoModel(){ NombreBanco = "HSBC",          Prefijo = "HSBC" },
+                new BancoPrefijoModel(){ NombreBanco = "Bancomer",      Prefijo = "BBVA" },
+                new BancoPrefijoModel(){ NombreBanco = "Scotiabank",    Prefijo = "SCOT" },
+                new BancoPrefijoModel(){ NombreBanco = "Citibanamex",   Prefijo = "CITI" },
+                new BancoPrefijoModel(){ NombreBanco = "Santander",     Prefijo = "SANT" },
+                new BancoPrefijoModel(){ NombreBanco = "Banorte",       Prefijo = "BAN"  }
             };
             ExcelPackage.License.SetNonCommercialOrganization("Grupo Sanborns");
         }
@@ -60,13 +67,15 @@ namespace Template_Tesoreria.Helpers.Files
             }
         }
 
-        public string getTemplate(List<Tbl_Tesoreria_Ext_Bancario> data, string bank)
+        public string getTemplate(List<Tbl_Tesoreria_Ext_Bancario> data)
         {
             try
             {
                 using(var package = new ExcelPackage(this._file))
                 {
                     var sheet = package.Workbook.Worksheets["Statement Lines"];
+                    var sheetHeader = package.Workbook.Worksheets["Statement Headers"];
+                    var sheetBalances = package.Workbook.Worksheets["Statement Balances"];
                     var i = 5;
                     var j = 1;
                     
@@ -86,13 +95,45 @@ namespace Template_Tesoreria.Helpers.Files
                         if (i > 5)
                         {
                             if (sheet.Cells[$"B{i - 1}"].Text == rows.Cuenta.Replace("-PESOS", "")) j++;
-                            else j = 1;
+                            else
+                            {
+                                sheetHeader.Cells[$"A{_rowHeader}"].Value = stmntNumber;
+                                sheetHeader.Cells[$"B{_rowHeader}"].Value = rows.Cuenta.Replace("-PESOS", "") ?? "";
+                                sheetHeader.Cells[$"C{_rowHeader}"].Value = "N";
+                                sheetHeader.Cells[$"D{_rowHeader}"].Value = rows.Fecha ?? "";
+                                sheetHeader.Cells[$"E{_rowHeader}"].Value = rows.Moneda;
+                                sheetHeader.Cells[$"F{_rowHeader}"].Value = rows.Fecha ?? "";
+                                sheetHeader.Cells[$"G{_rowHeader}"].Value = rows.Fecha ?? "";
+
+                                sheetBalances.Cells[$"$A{_rowBalances}"].Value = stmntNumber;
+                                sheetBalances.Cells[$"$B{_rowBalances}"].Value = rows.Cuenta.Replace("-PESOS", "") ?? "";
+                                sheetBalances.Cells[$"$C{_rowBalances}"].Value = "OPBD";
+                                sheetBalances.Cells[$"$D{_rowBalances}"].Value = rows.Saldo_Inicial;
+                                sheetBalances.Cells[$"$E{_rowBalances}"].Value = rows.Moneda;
+                                sheetBalances.Cells[$"$F{_rowBalances}"].Value = "CRDT";
+                                sheetBalances.Cells[$"$G{_rowBalances}"].Value = rows.Fecha;
+
+                                this._rowBalances++;
+
+                                sheetBalances.Cells[$"$A{_rowBalances}"].Value = stmntNumber;
+                                sheetBalances.Cells[$"$B{_rowBalances}"].Value = rows.Cuenta.Replace("-PESOS", "") ?? "";
+                                sheetBalances.Cells[$"$C{_rowBalances}"].Value = "CLBD";
+                                sheetBalances.Cells[$"$D{_rowBalances}"].Value = rows.Saldo_Final;
+                                sheetBalances.Cells[$"$E{_rowBalances}"].Value = rows.Moneda;
+                                sheetBalances.Cells[$"$F{_rowBalances}"].Value = "CRDT";
+                                sheetBalances.Cells[$"$G{_rowBalances}"].Value = rows.Fecha;
+
+                                this._rowBalances++;
+                                this._rowHeader++;
+                                j = 1;
+                            }
                         }
 
                         sheet.Cells[$"A{i}"].Value  = stmntNumber;
                         sheet.Cells[$"B{i}"].Value  = rows.Cuenta.Replace("-PESOS", "") ?? "";
                         sheet.Cells[$"C{i}"].Value  = j;
                         sheet.Cells[$"D{i}"].Value  = rows.Concepto ?? "";
+                        sheet.Cells[$"E{i}"].Value  = "MSC";
                         sheet.Cells[$"F{i}"].Value  = rows.Cargo != "0.0" ? rows.Cargo : rows.Abono;
                         sheet.Cells[$"G{i}"].Value  = rows.Moneda;
                         sheet.Cells[$"H{i}"].Value  = rows.Fecha ?? "";
@@ -104,7 +145,8 @@ namespace Template_Tesoreria.Helpers.Files
                         sheet.Cells[$"X{i}"].Value  = rows.Referencia_Leyenda ?? "";
                         sheet.Cells[$"BN{i}"].Value = rows.Referencia_Ext ?? "";
                         sheet.Cells[$"BP{i}"].Value = rows.Referencia_Numerica ?? "";
-                       
+                        sheet.Cells[$"BO{i}"].Value = rows.Referencia_Leyenda ?? "";
+
                         i++;
                     }
                     sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
@@ -119,6 +161,44 @@ namespace Template_Tesoreria.Helpers.Files
             {
                 this._log.writeLog($"HUBO UN LIGERO ERROR AL INSERTAR LOS DATOS\n\t\tERROR: {ex.Message}");
                 return $"Hubo un pequeño error: {ex.Message}";
+            }
+        }
+
+        private void fillHeader(Tbl_Tesoreria_Ext_Bancario data)
+        {
+            try
+            {
+                this._log.writeLog($"COMIENZO DE LA INSERCIÓN DEL HEADER DE LA CUENTA {data.Cuenta}");
+                var sheetsList = new List<string>()
+                {
+                    { "Statement Headers" }
+                };
+
+                using (var package = new ExcelPackage(this._file))
+                {
+                    foreach(var nmSheet in sheetsList)
+                    {
+                        var sheet = package.Workbook.Worksheets[nmSheet];
+                        this._log.writeLog($"SE TRABAJARÁ CON LA PESTAÑA {nmSheet}");
+
+                        var accounts = data.Cuenta.Replace("-PESOS", "") ?? "";
+                        accounts = accounts.Substring(accounts.Length - 6);
+
+                        var stmntNumber = string.Concat(
+                            this._preBank.Find(x => x.NombreBanco.Contains(bank)).Prefijo, "-",
+                            int.Parse(accounts), "-",
+                            data.Fecha.Replace("/", "")
+                        );
+
+                        
+                    }
+                    package.Save();
+                }
+            }
+            catch(Exception ex)
+            {
+                this._log.writeLog($"Hubo un ligero error al querer llenar el Header.\n\tError: {ex.Message}");
+                throw ex;
             }
         }
 

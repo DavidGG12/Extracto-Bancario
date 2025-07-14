@@ -146,7 +146,7 @@ namespace Template_Tesoreria
                 //Definimos la ruta donde guardaremos el archivo
                 //http://www.oracle.com/webfolder/technetwork/docs/fbdi-25b/fbdi/xlsm/CashManagementBankStatementImportTemplate.xlsm                
                 pathDestino = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\\Downloads\\Templates\\CashManagementBankStatementImportTemplate_" + nombreBanco + ".xlsm";
-                var mngmntExcel = new ManagementExcel(pathDestino);
+                var mngmntExcel = new ManagementExcel(pathDestino, nombreBanco);
 
                 mngmntExcel.closeDocument();
 
@@ -223,7 +223,7 @@ namespace Template_Tesoreria
                 log.writeLog($"TERMINO DE LIMPIEZA, SE PROSIGUE CON LA INSERCIÓN DE DATOS");
 
                 //Insertamos los datos que se encuentran en la base de datos
-                var fillData = mngmntExcel.getTemplate(data, nombreBanco);
+                var fillData = mngmntExcel.getTemplate(data);
 
                 Console.Write("Template de Oracle llenado con éxito.\n\n");
                 #endregion
