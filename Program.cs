@@ -53,11 +53,17 @@ namespace Template_Tesoreria
 
         public static string menuFiles(string ip)
         {
-            var path = $"\\{ip}\FormatoBancos";
+            var path = $@"\\10.115.3.177\FormatoBancos";
+            var credentials = new NetworkCredential(@"sanborns\svrsafin", "Lp5vr5a71n");
             ConsoleKey key;
-            var mngFile = new ManagementFilesSD(path);
+            
+            string[] files;
 
-            var files = mngFile.getFiles();
+            using (var mngFile = new ManagementFilesSD(path, credentials))
+            {
+                files = Directory.GetFiles(path);
+            }
+
             var selection = 0;
 
             do
@@ -239,7 +245,8 @@ namespace Template_Tesoreria
 
 
                 //var file = menuFiles(ip);
-                var file = menuFiles("10.115.3.177");
+                //var file = menuFiles("10.115.3.177");
+                var file = "INBURSA EJEMPLO EXTRACTO BANCARIO 100725 M.N.xlsx";
 
                 #region Inserción de Datos en Template
                 //Empezamos con la recolección de datos y el llenado de la información

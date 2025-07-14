@@ -223,5 +223,8 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\Files\NewFolder1\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

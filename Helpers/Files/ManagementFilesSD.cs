@@ -2,31 +2,66 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 
 namespace Template_Tesoreria.Helpers.Files
 {
-    public class ManagementFilesSD
+    public class ManagementFilesSD : IDisposable
     {
-        private string _path;
-        
-        public ManagementFilesSD(string path)
+        string _networkName;
+
+        public ManagementFilesSD(string networkName, NetworkCredential credentials)
         {
-            this._path = path;
+            _networkName = networkName;
+
+            var netResource = new NetResource()
+            {
+                Scope = 2, 
+                ResourceType = 1,
+                DisplayType = 3,
+                Usage = 1,
+                RemoteName = networkName
+            };
+
+            var result = WNetAddConnection2(
+                netResource,
+                credentials.Password,
+                credentials.UserName,
+                0);
+
+            if (result != 0)
+            {
+                throw new InvalidOperationException("Error al conectar. Código: " + result);
+            }
         }
 
-        public string[] getFiles()
+        public void Dispose()
         {
-            if (Directory.Exists(this._path))
-            {
-                string[] files = Directory.GetFiles(this._path);
-                return files;
-            }
-            else
-            {
-                return null;
-            }
+            WNetCancelConnection2(_networkName, 0, true);
+        }
+
+        [DllImport("mpr.dll")]
+        private static extern int WNetAddConnection2(NetResource netResource,
+            string password, string username, int flags);
+
+        [DllImport("mpr.dll")]
+        private static extern int WNetCancelConnection2(string name, int flags, bool force);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public class NetResource
+        {
+            public int Scope;
+            public int ResourceType;
+            public int DisplayType;
+            public int Usage;
+            public string LocalName;
+            public string RemoteName;
+            public string Comment;
+            public string Provider;
         }
     }
 }
