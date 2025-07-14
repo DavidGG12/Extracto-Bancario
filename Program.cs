@@ -41,6 +41,53 @@ namespace Template_Tesoreria
             Console.Write("\rTerminado\n");
         }
 
+        static void wrtFooter(string txt)
+        {
+            int rowFooter = Console.WindowHeight - 1;
+            Console.SetCursorPosition(0, rowFooter);
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor= ConsoleColor.Black;
+            Console.WriteLine(txt.PadRight(Console.WindowWidth));
+            Console.ResetColor();
+        }
+
+        public static string menuFiles(string ip)
+        {
+            var path = $"\\{ip}\FormatoBancos";
+            ConsoleKey key;
+            var mngFile = new ManagementFilesSD(path);
+
+            var files = mngFile.getFiles();
+            var selection = 0;
+
+            do
+            {
+                Console.Clear();
+
+                for(int i = 0; i < files.Length; i++)
+                {
+                    if(i == selection)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Gray;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                    }
+
+                    Console.WriteLine(files[i]);
+                    Console.ResetColor();
+                }
+
+                key = Console.ReadKey(true).Key;
+
+                if (key == ConsoleKey.UpArrow)
+                    selection = (selection == 0) ? files.Length - 1 : selection - 1;
+                else if (key == ConsoleKey.DownArrow)
+                    selection = (selection == files.Length - 1) ? 0 : selection + 1;
+            }
+            while (key != ConsoleKey.Enter);
+
+            return files[selection];
+        }
+
         static void Main(string[] args)
         {
             var dtService = new DataService();
@@ -58,15 +105,19 @@ namespace Template_Tesoreria
                 new MenuOptionModel() { ID = "7", Option = "7. - BANORTE", Value = "Banorte" }
             };
             string opc = "", opc2 = "", nombreBanco = "", rutaCarpeta = "", urlArchivoDescaga = "", pathDestino = "";
+            var id = 1;
+
+            ConsoleKey key;
 
             try
             {
                 log.writeLog("COMENZANDO PROCESO");
 
-
+                
                 #region MENU
-                while (true)
+                do
                 {
+                    Console.Clear();
                     log.writeLog("IMPRESIÓN DEL MENÚ");
 
                     Console.Title = "Template Tesoreria";
@@ -83,18 +134,30 @@ namespace Template_Tesoreria
 
                     Console.WriteLine("Selecciona la compañía que deseas generar:\n");
 
-                    foreach(var option in options)
+                    foreach (var option in options)
                     {
+                        if(id.ToString() == option.ID)
+                        {
+                            Console.BackgroundColor = ConsoleColor.Gray;
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            opc = option.Option;
+                        }
                         Console.WriteLine(option.Option);
+                        Console.ResetColor();
                     }
-                    Console.Write("\nOpción: ");
-                    opc = Console.ReadLine().Trim();
 
-                    log.writeLog($"SE ESCOGIÓ LA OPCIÓN: {opc}");
+                    //wrtFooter("[UpArrow]/[DownArrow] Navegar  |  [Enter] Seleccionar");
 
-                    var chsOpt = options.Find(x => x.ID.Contains(opc));
+                    key = Console.ReadKey(true).Key;
 
-                    if(chsOpt != null)
+                    var chsOpt = options.Find(x => x.Option.Contains(opc));
+
+                    if(key == ConsoleKey.UpArrow)
+                        id = (id == 1) ? 1 : int.Parse(chsOpt.ID) - 1;
+                    else if(key == ConsoleKey.DownArrow)
+                        id = (id == options.Count) ? options.Count : int.Parse(chsOpt.ID) + 1; 
+
+                    if (key == ConsoleKey.Enter)
                     {
                         nombreBanco = chsOpt.Value;
                         Console.Write($"\n¿Está seguro de querer trabajar con {nombreBanco}? [S/N]: ");
@@ -105,17 +168,12 @@ namespace Template_Tesoreria
                             Console.Clear();
                             break;
                         }
+                        else
+                            key = ConsoleKey.UpArrow;
                         Console.Clear();
                     }
-                    else
-                    {
-                        Console.WriteLine("\nNo existe la opción escogida\nIntente de nuevo");
-                        Thread.Sleep(1000);
-                        log.writeLog($"LA OPCIÓN {opc} NO EXISTE, REGRESANDO AL MENÚ");
-                        Console.Clear();
-                    }
-                }
 
+                } while (key != ConsoleKey.Enter);
                 #endregion
 
                 #region Proceso
@@ -179,20 +237,24 @@ namespace Template_Tesoreria
                 Console.Write($"\nSe trabajará con la IP: {ip}\n\n");
                 #endregion
 
+
+                //var file = menuFiles(ip);
+                var file = menuFiles("10.115.3.177");
+
                 #region Inserción de Datos en Template
                 //Empezamos con la recolección de datos y el llenado de la información
                 var data = new List<Tbl_Tesoreria_Ext_Bancario>();
                 var parameters = new Dictionary<string, object>()
                 {
                     { "@Ip", "10.115.3.177" },
-                    { "@Excelname", "a.xls" }
+                    { "@Excelname", file }
                 };
 
                 Console.Write($"\nObteniendo los datos que se insertaran en el template.\n\n");
 
                 Task.Run(() =>
                     {
-                        data = dtService.GetDataList<Tbl_Tesoreria_Ext_Bancario>(cnn.DbTesoreria1019(), "pa_Tesoreria_CargaExcel", null);
+                        data = dtService.GetDataList<Tbl_Tesoreria_Ext_Bancario>(cnn.DbTesoreria1019(), "pa_Tesoreria_CargaExcel", parameters);
                         cts.Cancel();
                     }
                 );

@@ -92,41 +92,30 @@ namespace Template_Tesoreria.Helpers.Files
                             rows.Fecha.Replace("/", "")
                         );
 
-                        if (i > 5)
+                        if (sheet.Cells[$"B{i - 1}"].Text == rows.Cuenta.Replace("-PESOS", "")) j++;
+                        else
                         {
-                            if (sheet.Cells[$"B{i - 1}"].Text == rows.Cuenta.Replace("-PESOS", "")) j++;
-                            else
-                            {
-                                sheetHeader.Cells[$"A{_rowHeader}"].Value = stmntNumber;
-                                sheetHeader.Cells[$"B{_rowHeader}"].Value = rows.Cuenta.Replace("-PESOS", "") ?? "";
-                                sheetHeader.Cells[$"C{_rowHeader}"].Value = "N";
-                                sheetHeader.Cells[$"D{_rowHeader}"].Value = rows.Fecha ?? "";
-                                sheetHeader.Cells[$"E{_rowHeader}"].Value = rows.Moneda;
-                                sheetHeader.Cells[$"F{_rowHeader}"].Value = rows.Fecha ?? "";
-                                sheetHeader.Cells[$"G{_rowHeader}"].Value = rows.Fecha ?? "";
+                            sheetHeader.Cells[$"A{_rowHeader}"].Value = stmntNumber;
+                            sheetHeader.Cells[$"B{_rowHeader}"].Value = rows.Cuenta.Replace("-PESOS", "") ?? "";
+                            sheetHeader.Cells[$"C{_rowHeader}"].Value = "N";
+                            sheetHeader.Cells[$"D{_rowHeader}"].Value = rows.Fecha ?? "";
+                            sheetHeader.Cells[$"E{_rowHeader}"].Value = rows.Moneda;
+                            sheetHeader.Cells[$"F{_rowHeader}"].Value = rows.Fecha ?? "";
+                            sheetHeader.Cells[$"G{_rowHeader}"].Value = rows.Fecha ?? "";
 
-                                sheetBalances.Cells[$"$A{_rowBalances}"].Value = stmntNumber;
-                                sheetBalances.Cells[$"$B{_rowBalances}"].Value = rows.Cuenta.Replace("-PESOS", "") ?? "";
-                                sheetBalances.Cells[$"$C{_rowBalances}"].Value = "OPBD";
-                                sheetBalances.Cells[$"$D{_rowBalances}"].Value = rows.Saldo_Inicial;
-                                sheetBalances.Cells[$"$E{_rowBalances}"].Value = rows.Moneda;
-                                sheetBalances.Cells[$"$F{_rowBalances}"].Value = "CRDT";
-                                sheetBalances.Cells[$"$G{_rowBalances}"].Value = rows.Fecha;
+                            sheetBalances.Cells[$"A{_rowBalances}:A{_rowBalances + 1}"].Value   = stmntNumber;
+                            sheetBalances.Cells[$"B{_rowBalances}:B{_rowBalances + 1}"].Value   = rows.Cuenta.Replace("-PESOS", "") ?? "";
+                            sheetBalances.Cells[$"C{_rowBalances}"].Value                       = "OPBD";
+                            sheetBalances.Cells[$"C{_rowBalances + 1}"].Value                   = "CLBD";
+                            sheetBalances.Cells[$"D{_rowBalances}"].Value                       = rows.Saldo_Inicial;
+                            sheetBalances.Cells[$"D{_rowBalances + 1}"].Value                   = rows.Saldo_Final;
+                            sheetBalances.Cells[$"E{_rowBalances}:E{_rowBalances + 1}"].Value   = rows.Moneda;
+                            sheetBalances.Cells[$"F{_rowBalances}:F{_rowBalances + 1}"].Value   = "CRDT";
+                            sheetBalances.Cells[$"G{_rowBalances}:G{_rowBalances + 1}"].Value   = rows.Fecha;
 
-                                this._rowBalances++;
-
-                                sheetBalances.Cells[$"$A{_rowBalances}"].Value = stmntNumber;
-                                sheetBalances.Cells[$"$B{_rowBalances}"].Value = rows.Cuenta.Replace("-PESOS", "") ?? "";
-                                sheetBalances.Cells[$"$C{_rowBalances}"].Value = "CLBD";
-                                sheetBalances.Cells[$"$D{_rowBalances}"].Value = rows.Saldo_Final;
-                                sheetBalances.Cells[$"$E{_rowBalances}"].Value = rows.Moneda;
-                                sheetBalances.Cells[$"$F{_rowBalances}"].Value = "CRDT";
-                                sheetBalances.Cells[$"$G{_rowBalances}"].Value = rows.Fecha;
-
-                                this._rowBalances++;
-                                this._rowHeader++;
-                                j = 1;
-                            }
+                            this._rowBalances = this._rowBalances + 2;
+                            this._rowHeader++;
+                            j = 1;
                         }
 
                         sheet.Cells[$"A{i}"].Value  = stmntNumber;
