@@ -53,8 +53,8 @@ namespace Template_Tesoreria
 
         public static string menuFiles(string ip)
         {
-            var path = $@"\\10.115.3.177\FormatoBancos";
-            var credentials = new NetworkCredential(@"sanborns\svrsafin", "Lp5vr5a71n");
+            var path = @"\\10.128.10.19\FormatoBancos";
+            var credentials = new NetworkCredential("svrsafin", "Lp5vr5a71n", "sanborns");
             ConsoleKey key;
             
             string[] files;
@@ -158,9 +158,9 @@ namespace Template_Tesoreria
 
                     var chsOpt = options.Find(x => x.Option.Contains(opc));
 
-                    if(key == ConsoleKey.UpArrow)
+                    if(key == ConsoleKey.UpArrow || key == ConsoleKey.W)
                         id = (id == 1) ? 1 : int.Parse(chsOpt.ID) - 1;
-                    else if(key == ConsoleKey.DownArrow)
+                    else if(key == ConsoleKey.DownArrow || key == ConsoleKey.S)
                         id = (id == options.Count) ? options.Count : int.Parse(chsOpt.ID) + 1; 
 
                     if (key == ConsoleKey.Enter)
@@ -245,7 +245,7 @@ namespace Template_Tesoreria
 
 
                 //var file = menuFiles(ip);
-                //var file = menuFiles("10.115.3.177");
+                //var file = menuFiles("10.128.10.19");
                 var file = "INBURSA EJEMPLO EXTRACTO BANCARIO 100725 M.N.xlsx";
 
                 #region Inserción de Datos en Template
@@ -253,7 +253,7 @@ namespace Template_Tesoreria
                 var data = new List<Tbl_Tesoreria_Ext_Bancario>();
                 var parameters = new Dictionary<string, object>()
                 {
-                    { "@Ip", "10.115.3.177" },
+                    { "@Ip", "10.128.10.19" },
                     { "@Excelname", file }
                 };
 

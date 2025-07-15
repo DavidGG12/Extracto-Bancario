@@ -78,6 +78,7 @@ namespace Template_Tesoreria.Helpers.Files
                     var sheetBalances = package.Workbook.Worksheets["Statement Balances"];
                     var i = 5;
                     var j = 1;
+                    var dateDoc = data.Find(x => x.Fecha != null && x.Fecha.Any(f => f != null)).Fecha;
                     
                     this._log.writeLog($"COMIENZO CON CICLO PARA LA INSERCIÓN DE DATOS.\n\t\tSE INSERTARAN {data.Count} REGISTROS");
 
@@ -89,7 +90,7 @@ namespace Template_Tesoreria.Helpers.Files
                         var stmntNumber = string.Concat(
                             this._preBank.Find(x => x.NombreBanco.Contains(bank)).Prefijo, "-",
                             int.Parse(accounts), "-",
-                            rows.Fecha.Replace("/", "")
+                            rows.Fecha == null ? dateDoc.Replace("/", "") : rows.Fecha.Replace("/", "")
                         );
 
                         if (sheet.Cells[$"B{i - 1}"].Text == rows.Cuenta.Replace("-PESOS", "")) j++;
@@ -98,10 +99,10 @@ namespace Template_Tesoreria.Helpers.Files
                             sheetHeader.Cells[$"A{_rowHeader}"].Value = stmntNumber;
                             sheetHeader.Cells[$"B{_rowHeader}"].Value = rows.Cuenta.Replace("-PESOS", "") ?? "";
                             sheetHeader.Cells[$"C{_rowHeader}"].Value = "N";
-                            sheetHeader.Cells[$"D{_rowHeader}"].Value = rows.Fecha ?? "";
+                            sheetHeader.Cells[$"D{_rowHeader}"].Value = rows.Fecha ?? dateDoc;
                             sheetHeader.Cells[$"E{_rowHeader}"].Value = rows.Moneda;
-                            sheetHeader.Cells[$"F{_rowHeader}"].Value = rows.Fecha ?? "";
-                            sheetHeader.Cells[$"G{_rowHeader}"].Value = rows.Fecha ?? "";
+                            sheetHeader.Cells[$"F{_rowHeader}"].Value = rows.Fecha ?? dateDoc;
+                            sheetHeader.Cells[$"G{_rowHeader}"].Value = rows.Fecha ?? dateDoc;
 
                             sheetBalances.Cells[$"A{_rowBalances}:A{_rowBalances + 1}"].Value   = stmntNumber;
                             sheetBalances.Cells[$"B{_rowBalances}:B{_rowBalances + 1}"].Value   = rows.Cuenta.Replace("-PESOS", "") ?? "";
@@ -111,32 +112,35 @@ namespace Template_Tesoreria.Helpers.Files
                             sheetBalances.Cells[$"D{_rowBalances + 1}"].Value                   = rows.Saldo_Final;
                             sheetBalances.Cells[$"E{_rowBalances}:E{_rowBalances + 1}"].Value   = rows.Moneda;
                             sheetBalances.Cells[$"F{_rowBalances}:F{_rowBalances + 1}"].Value   = "CRDT";
-                            sheetBalances.Cells[$"G{_rowBalances}:G{_rowBalances + 1}"].Value   = rows.Fecha;
+                            sheetBalances.Cells[$"G{_rowBalances}:G{_rowBalances + 1}"].Value   = rows.Fecha ?? dateDoc;
 
                             this._rowBalances = this._rowBalances + 2;
                             this._rowHeader++;
                             j = 1;
                         }
 
-                        sheet.Cells[$"A{i}"].Value  = stmntNumber;
-                        sheet.Cells[$"B{i}"].Value  = rows.Cuenta.Replace("-PESOS", "") ?? "";
-                        sheet.Cells[$"C{i}"].Value  = j;
-                        sheet.Cells[$"D{i}"].Value  = rows.Concepto ?? "";
-                        sheet.Cells[$"E{i}"].Value  = "MSC";
-                        sheet.Cells[$"F{i}"].Value  = rows.Cargo != "0.0" ? rows.Cargo : rows.Abono;
-                        sheet.Cells[$"G{i}"].Value  = rows.Moneda;
-                        sheet.Cells[$"H{i}"].Value  = rows.Fecha ?? "";
-                        sheet.Cells[$"J{i}"].Value  = rows.Cargo != "0.0" ? "DBIT" : "CRDT";
-                        sheet.Cells[$"L{i}"].Value  = rows.Referencia ?? "";
-                        sheet.Cells[$"S{i}"].Value  = rows.RFC_Ordenante ?? "";
-                        sheet.Cells[$"T{i}"].Value  = rows.Ordenante ?? "";
-                        sheet.Cells[$"W{i}"].Value  = rows.Movimiento ?? "";
-                        sheet.Cells[$"X{i}"].Value  = rows.Referencia_Leyenda ?? "";
-                        sheet.Cells[$"BN{i}"].Value = rows.Referencia_Ext ?? "";
-                        sheet.Cells[$"BP{i}"].Value = rows.Referencia_Numerica ?? "";
-                        sheet.Cells[$"BO{i}"].Value = rows.Referencia_Leyenda ?? "";
+                        if (!string.Equals(rows.Referencia, "SIN MOVIMIENTOS", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            sheet.Cells[$"A{i}"].Value  = stmntNumber;
+                            sheet.Cells[$"B{i}"].Value  = rows.Cuenta.Replace("-PESOS", "") ?? "";
+                            sheet.Cells[$"C{i}"].Value  = j;
+                            sheet.Cells[$"D{i}"].Value  = rows.Concepto ?? "";
+                            sheet.Cells[$"E{i}"].Value  = "MSC";
+                            sheet.Cells[$"F{i}"].Value  = rows.Cargo != "0.0" ? rows.Cargo : rows.Abono;
+                            sheet.Cells[$"G{i}"].Value  = rows.Moneda;
+                            sheet.Cells[$"H{i}"].Value  = rows.Fecha ?? "";
+                            sheet.Cells[$"J{i}"].Value  = rows.Cargo != "0.0" ? "DBIT" : "CRDT";
+                            sheet.Cells[$"L{i}"].Value  = rows.Referencia ?? "";
+                            sheet.Cells[$"S{i}"].Value  = rows.RFC_Ordenante ?? "";
+                            sheet.Cells[$"T{i}"].Value  = rows.Ordenante ?? "";
+                            sheet.Cells[$"W{i}"].Value  = rows.Movimiento ?? "";
+                            sheet.Cells[$"X{i}"].Value  = rows.Referencia_Leyenda ?? "";
+                            sheet.Cells[$"BN{i}"].Value = rows.Referencia_Ext ?? "";
+                            sheet.Cells[$"BP{i}"].Value = rows.Referencia_Numerica ?? "";
+                            sheet.Cells[$"BO{i}"].Value = rows.Referencia_Leyenda ?? "";
+                            i++;
+                        }
 
-                        i++;
                     }
                     sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
                     sheet.Row(1).CustomHeight = false;

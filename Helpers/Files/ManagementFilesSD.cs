@@ -27,11 +27,14 @@ namespace Template_Tesoreria.Helpers.Files
                 RemoteName = networkName
             };
 
-            var result = WNetAddConnection2(
-                netResource,
-                credentials.Password,
-                credentials.UserName,
-                0);
+            var username = credentials.Domain != null ? $@"{credentials.Domain}\{credentials.UserName}" : credentials.UserName;
+            var result = WNetAddConnection2(netResource, credentials.Password, username, 0);
+
+            if(result == 1219)
+            {
+                WNetCancelConnection2(null, 0, true);
+                result = WNetAddConnection2(netResource, credentials.Password, credentials.UserName, 0);
+            }
 
             if (result != 0)
             {
