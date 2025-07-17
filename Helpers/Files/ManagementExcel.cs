@@ -76,9 +76,9 @@ namespace Template_Tesoreria.Helpers.Files
                     var sheet = package.Workbook.Worksheets["Statement Lines"];
                     var sheetHeader = package.Workbook.Worksheets["Statement Headers"];
                     var sheetBalances = package.Workbook.Worksheets["Statement Balances"];
+                    var dateDoc = data.Find(x => x.Fecha != null && x.Fecha.Any(f => f != null)).Fecha;
                     var i = 5;
                     var j = 1;
-                    var dateDoc = data.Find(x => x.Fecha != null && x.Fecha.Any(f => f != null)).Fecha;
                     
                     this._log.writeLog($"COMIENZO CON CICLO PARA LA INSERCIÓN DE DATOS.\n\t\tSE INSERTARAN {data.Count} REGISTROS");
 
